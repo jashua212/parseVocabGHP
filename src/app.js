@@ -7,7 +7,7 @@ const util = require('./appUtilities.js');
 
 (function () {
 	var messageBanner;
-	// var allRangeLength = 0;
+	var allRangeLength = 0;
 
 	Office.initialize = function () {
 		$(document).ready(function () {
@@ -142,7 +142,7 @@ const util = require('./appUtilities.js');
 	}
 
 	/* Operative Functions */
-	/* function selectAll() {
+	function selectAll() {
 		Word.run(function (context) {
 			// queue command to select whole doc
 			context.document.body.select();
@@ -158,7 +158,7 @@ const util = require('./appUtilities.js');
 			});
 		})
 		.catch(errHandler);
-	} */
+	}
 
 	function bifurcateParas(paras) {
 		const rexqtBeginning = /(^|(\(\w{1,3}\)\s+?))“[^”]+”/;
@@ -248,7 +248,7 @@ const util = require('./appUtilities.js');
 				var paras = allRange.items.map(function (p) {
 					return p.text.trim();
 				});
-				console.log('paras.length', paras.length);
+				console.log('paras', paras);
 
 				// check agst global var to confirm that whole doc is still selected
 				/* if (paras.length === allRangeLength) {
