@@ -247,7 +247,7 @@ const util = require('./appUtilities.js');
 						return p.text.trim();
 					})
 					.filter(function (p) {
-						return p;
+						return p; //filter out empty items in array
 					});
 					console.log('paras', paras);
 
@@ -306,6 +306,7 @@ const util = require('./appUtilities.js');
 				console.log('debug sortedPojo', sortedPojo);
 				/* END HERE */
 
+				// Throw error if pojo is empty
 				if (!Object.keys(sortedPojo).length) {
 					var header = 'Error:';
 					var content = 'No definition paragraphs have been selected';
@@ -314,34 +315,48 @@ const util = require('./appUtilities.js');
 					return context.sync(); //bail
 				}
 
-				/* var firstTableArray = util.createFirstTable(analysisPojo);
-				var secondTableArray = util.createSecondTable(analysisPojo);
-				var mainTableArray = util.createMainTable(sortedPojo);
+				// Create master array of individual term tables
+				var masterTableArray = [];
+
+				Object.keys(sortedPojo).forEach(function (term) {
+					var termTableArray = [];
+					var termObj = sortedPojo[term];
+
+					//populate termTableArray
+					termTableArray.push([term]);
+					termTableArray.push([termObj.def]);
+
+					if (termObj.synos) {
+						termTableArray.push(['SYNONYMS', termObj.synos]);
+					}
+
+					if (termObj.antos) {
+						termTableArray.push(['ANTONYMS', termObj.antos]);
+					}
+
+					//push termTableArray into masterTableArray
+					masterTableArray.push(termTableArray);
+				});
+
 				var newDoc = context.application.createDocument();
 				context.load(newDoc);
 
 				return context.sync().then(function () {
 					// console.log('newDoc', newDoc);
-					var firstTable = util.insertTable(newDoc.body, firstTableArray);
-					firstTable.headerRowCount = 1;
-					firstTable.style = 'List Table 4 - Accent 1';
-					firstTable.styleFirstColumn = false;
 
-					var secondTable = util.insertTable(newDoc.body, secondTableArray);
-					secondTable.headerRowCount = 1;
-					secondTable.style = 'List Table 4 - Accent 1';
-					secondTable.styleFirstColumn = false;
-
-					var mainTable = util.insertTable(newDoc.body, mainTableArray);
-					mainTable.headerRowCount = 1;
-					mainTable.style = 'List Table 4 - Accent 1';
+					masterTableArray.forEach(function (termTableArray) {
+						var table = util.insertTable(newDoc.body, termTableArray);
+						table.headerRowCount = 1;
+						table.style = 'List Table 4 - Accent 1';
+						table.styleFirstColumn = false;
+					});
 
 					return context.sync().then(function () {
 						newDoc.open();
 
 						return context.sync();
 					});
-				}); */
+				});
 			});
 		})
 		.catch(errHandler);
