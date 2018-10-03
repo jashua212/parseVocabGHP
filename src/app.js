@@ -7,7 +7,7 @@ const util = require('./appUtilities.js');
 
 (function () {
 	var messageBanner;
-	var allRangeLength = 0;
+	// var allRangeLength = 0;
 
 	Office.initialize = function () {
 		$(document).ready(function () {
@@ -142,7 +142,7 @@ const util = require('./appUtilities.js');
 	}
 
 	/* Operative Functions */
-	function selectAll() {
+	/* function selectAll() {
 		Word.run(function (context) {
 			// queue command to select whole doc
 			context.document.body.select();
@@ -158,7 +158,7 @@ const util = require('./appUtilities.js');
 			});
 		})
 		.catch(errHandler);
-	}
+	} */
 
 	function bifurcateParas(paras) {
 		const rexqtBeginning = /(^|(\(\w{1,3}\)\s+?))“[^”]+”/;
@@ -245,10 +245,14 @@ const util = require('./appUtilities.js');
 			context.load(allRange, 'text');
 
 			return context.sync().then(function () {
-				var paras = allRange.items.map(function (p) {
-					return p.text.trim();
-				});
-				console.log('paras', paras);
+				var paras = allRange.items
+					.map(function (p) {
+						return p.text.trim();
+					})
+					.filter(function (p) {
+						return p;
+					});
+					console.log('paras', paras);
 
 				// check agst global var to confirm that whole doc is still selected
 				/* if (paras.length === allRangeLength) {
@@ -273,25 +277,30 @@ const util = require('./appUtilities.js');
 				/* 'REXPOJO' PASS */
 				// populate rexPojo with every quoted term appearing at the beginning of each para
 				paras.forEach(function (p) {
-					var qtPhrase = p.match(rexqtPhrase);
-					if (qtPhrase) {
-						(qtPhrase[0].match(rexqts) || [])
-							.map(function (qt) {
-								return qt.replace(/[“”\,]/g, '');
-							})
-							.forEach(function (dt) {
-								rexPojo[dt] = util.createRexFromString(dt, 'g'); //put in rexPojo
-							});
+					if (!/^\*/.test(p)) {
+						var arr = p.split('\t');
+						console.log(arr);
+
+					} else if (/SYNONYMS/.test(p)) {
+						var synos = p.replace('*SYNONYMS:*').trim();
+						console.log('synos', synos);
+
+					} else if (/ANTONYMS/.test(p)) {
+						var antos = p.replace('*ANTONYMS:*').trim();
+						console.log('antos', antos);
+
+					} else {
+						console.log('error parsing empty para');
 					}
 				});
 				// console.log('rexPojo before adding userTerms', rexPojo);
 
 				// add user specified terms (held in live settings) to rexPojo
 				// also, store them in a variable for adjustments below
-				var userTermsAdded = (Office.context.document.settings.get('userTerms-add') || []);
+				/* var userTermsAdded = (Office.context.document.settings.get('userTerms-add') || []);
 				userTermsAdded.forEach(function (uta) {
 					rexPojo[uta] = util.createRexFromString(uta, 'g'); //put in rexPojo
-				});
+				}); */
 
 				// sort rexPojo by length (so longer ones get removed from para first per below, and
 				// avoid creating fragments of defined terms that would be caught later by init caps)
@@ -502,17 +511,17 @@ const util = require('./appUtilities.js');
 				/* Pick out terms that are not defined in selection */
 				sortedPojoKeys.forEach(function (term) {
 					if (!sortedPojo[term].defined) {
-						if (userTermsAdded.indexOf(term) !== -1) {
+						/* if (userTermsAdded.indexOf(term) !== -1) {
 							// unless it is one of the userTermsAdded
 							sortedPojo[term].defined = 2; //use 2 instead of 1 to distinguish
 
-						} else {
+						} else { */
 							if (!analysisPojo.notDefined) {
 								// use array (instead of another object) as value
 								analysisPojo.notDefined = [];
 							}
 							analysisPojo.notDefined.push(term);
-						}
+						// }
 					}
 				});
 
