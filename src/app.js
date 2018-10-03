@@ -348,7 +348,7 @@ const util = require('./appUtilities.js');
 					masterTableArray.forEach(function (termTableArray) {
 						var table = util.insertTable(newDoc.body, termTableArray);
 						// table.headerRowCount = 0;
-						table.style = 'List Table 4 - Accent 1';
+						table.style = 'Grid Table 1 Light - Accent 1';
 						table.styleFirstColumn = false;
 					});
 
