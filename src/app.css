@@ -1,0 +1,136 @@
+/* Page-specific styling */
+
+#content-header {
+	background: #2a8dd4;
+	color: #fff;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: auto;
+	overflow: auto;
+}
+
+/* .hidden {
+	display: none;
+}
+
+.ms-MessageBanner {
+	cursor: pointer;
+} */
+
+#notification-popup {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+}
+
+ul {
+	margin-left: -10px;
+	margin-top: 11px;
+}
+
+#content-main {
+	background: #fff;
+	position: fixed;
+	top: 80px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow: auto;
+}
+
+.padding {
+	padding: 15px;
+}
+
+#user-term-add,
+#user-term-minus {
+	font-size: 96%;
+	margin-top: 10px;
+	padding-top: 7px;
+}
+
+#user-terms-add-container,
+#user-terms-minus-container {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 7px 0 0;
+	box-shadow: none;
+	border: none;
+	border-radius: 0;
+	font-size: 90%;
+	height: auto;
+	width: 100%;
+	min-width: 180px;
+	outline: none;
+}
+
+.user-term {
+	background-color: #c8def4; /*powder blue*/
+	cursor: pointer;
+	line-height: 26px;
+	outline: none;
+	overflow: hidden;
+	padding: 0 16px 0 12px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	pointer-events: none;
+}
+/* .user-term:hover {
+	background-color: #c8def4;
+} */
+.user-term:after {
+	color: #aaa;
+	content: '\00D7';
+	display: inline-block;
+	float: right;
+	padding: 0 5px;
+	margin-right: -5px;
+	margin-top: -1px;
+	pointer-events: all;
+	transform: scale(1.15, 1.15);
+}
+
+.user-term:hover:after {
+	color: #0080ff; /*bright blue*/
+	font-weight: 600;
+	/* margin-top: 0;
+	margin-bottom: -1px; */
+}
+
+/*
+html {
+	position: relative;
+	min-height: 100%;
+}
+body {
+	margin: 0 0 40px;
+}
+.footer {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 40px;
+	width: 100%;
+}
+
+.padding {
+	padding: 15px;
+}
+
+#notification-popup.ms-MessageBanner {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+	text-align: left;
+	height: inherit;
+	min-width: inherit;
+}
+
+#notification-popup .ms-MessageBanner-text {
+	margin: 0;
+	padding: 18px 15px;
+	min-width: inherit;
+}
+*/

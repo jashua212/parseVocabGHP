@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Definitions Parser</title>
+
+	<!-- Office JavaScript API -->
+	<script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js"></script>
+
+	<!-- CDN -->
+	<!-- For the Office UI Fabric, go to http://aka.ms/office-ui-fabric to learn more. -->
+	<link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.min.css" />
+	<link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.components.min.css" />
+
+	<!-- Template styles -->
+	<link href="src/app.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="ms-font-m ms-welcome">
+	<div id="content-header">
+		<ul>
+			<li>Select definition paragraphs to be parsed</li>
+			<li>Curly quotes must wrap defined terms</li>
+			<li>Replace non-breaking spaces and hyphens</li>
+		</ul>
+	</div>
+	<div id="content-main">
+		<div class="padding">
+			<div class="label"><strong>Include</strong> following as defined terms:</div>
+			<input id="user-term-add" class="ms-TextField-field" type="text" placeholder="..." />
+			<div id="user-terms-add-container"></div>
+		</div>
+		<div class="padding">
+			<div class="label"><strong>Exclude</strong> following as defined terms:</div>
+			<input id="user-term-minus" class="ms-TextField-field" type="text" placeholder="..." />
+			<div id="user-terms-minus-container"></div>
+		</div>
+		<div class="padding">
+			<button class="ms-Button" id="select-btn">
+				<span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+				<span class="ms-Button-label" id="select-btn-text"></span>
+				<span class="ms-Button-description" id="select-btn-desc"></span>
+			</button>
+		</div>
+		<div class="padding">
+			<button class="ms-Button" id="parse-btn">
+				<span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+				<span class="ms-Button-label" id="parse-btn-text"></span>
+				<span class="ms-Button-description" id="parse-btn-desc"></span>
+			</button>
+		</div>
+	</div>
+
+	<div class="ms-MessageBanner" id="notification-popup">
+		<div class="ms-MessageBanner-content">
+			<div class="ms-MessageBanner-text">
+				<div class="ms-MessageBanner-clipper">
+					<div class="ms-font-m-plus ms-fontWeight-semibold" id="notification-header"></div>
+					<div class="ms-font-m ms-fontWeight-semilight" id="notification-body"></div>
+				</div>
+			</div>
+			<button class="ms-MessageBanner-expand" style="display:none"><i class="ms-Icon ms-Icon--chevronsDown"></i> </button>
+			<div class="ms-MessageBanner-action"></div>
+		</div>
+		<button class="ms-MessageBanner-close"> <i class="ms-Icon ms-Icon--x"></i> </button>
+	</div>
+	<script type="text/javascript" src="libs/core-js/core.min.js"></script>
+	<script type="text/javascript" src="libs/jquery/jquery.slim.min.js"></script>
+	<script type="text/javascript" src="libs/FabricUI/MessageBanner.js"></script>
+	<script type="text/javascript" src="builds/bundle.js"></script>
+</body>
+
+</html>
