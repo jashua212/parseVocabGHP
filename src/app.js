@@ -279,32 +279,30 @@ const util = require('./appUtilities.js');
 				/* 'REXPOJO' PASS */
 				// populate rexPojo with every quoted term appearing at the beginning of each para
 				paras.forEach(function (p) {
-					var termObj;
+					let term = '';
 
 					if (!/^\*/.test(p)) {
-						var arr = p.split('\t');
+						let arr = p.split('\t');
 						console.log('arr', arr);
 
-						//create term object
-						termObj = Object.create(null);
+						//create term object within pojo
+						term = arr[0];
+						pojo[term] = Object.create(null);
 
-						//add definition to term object
-						termObj.def = arr[1];
-
-						//add term object to main pojo
-						pojo[arr[0]] = termObj;
+						//add definition thereto
+						pojo[term].def = arr[1];
 
 					} else if (/SYNONYMS/.test(p)) {
-						var synos = p.replace('*SYNONYMS:*', '').trim();
+						let synos = p.replace('*SYNONYMS:*', '').trim();
 						console.log('synos', synos);
 
-						termObj.synos = synos;
+						pojo[term].synos = synos;
 
 					} else if (/ANTONYMS/.test(p)) {
-						var antos = p.replace('*ANTONYMS:*', '').trim();
+						let antos = p.replace('*ANTONYMS:*', '').trim();
 						console.log('antos', antos);
 
-						termObj.antos = antos;
+						pojo[term].antos = antos;
 
 					} else {
 						console.log('error parsing empty para');
