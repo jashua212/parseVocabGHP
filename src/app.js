@@ -323,8 +323,8 @@ const util = require('./appUtilities.js');
 					var termObj = sortedPojo[term];
 
 					//populate termTableArray
-					termTableArray.push([term]);
-					termTableArray.push([termObj.def]);
+					termTableArray.push([term, ' ']);
+					termTableArray.push([termObj.def, ' ']);
 
 					if (termObj.synos) {
 						termTableArray.push(['SYNONYMS', termObj.synos]);
@@ -346,7 +346,7 @@ const util = require('./appUtilities.js');
 
 					masterTableArray.forEach(function (termTableArray) {
 						var table = util.insertTable(newDoc.body, termTableArray);
-						table.headerRowCount = 1;
+						// table.headerRowCount = 0;
 						table.style = 'List Table 4 - Accent 1';
 						table.styleFirstColumn = false;
 					});
