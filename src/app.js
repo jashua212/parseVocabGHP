@@ -274,25 +274,43 @@ const util = require('./appUtilities.js');
 				var rexqtPhrase = /(^|(\(\w{1,3}\)\s+?))“[^”]+”([^”]{1,7}“[^”]+”)*/;
 				var rexqts = /“[^”]+”/g;
 
+				var pojo = Object.create(null);
+
 				/* 'REXPOJO' PASS */
 				// populate rexPojo with every quoted term appearing at the beginning of each para
 				paras.forEach(function (p) {
+					var termObj;
+
 					if (!/^\*/.test(p)) {
 						var arr = p.split('\t');
-						console.log(arr);
+						console.log('arr', arr);
+
+						//create term object
+						termObj = Object.create(null);
+
+						//add definition to term object
+						termObj.def = arr[1];
+
+						//add term object to main pojo
+						pojo[arr[0]] = termObj;
 
 					} else if (/SYNONYMS/.test(p)) {
-						var synos = p.replace('*SYNONYMS:*').trim();
+						var synos = p.replace('*SYNONYMS:*', '').trim();
 						console.log('synos', synos);
 
+						termObj.synos = synos;
+
 					} else if (/ANTONYMS/.test(p)) {
-						var antos = p.replace('*ANTONYMS:*').trim();
+						var antos = p.replace('*ANTONYMS:*', '').trim();
 						console.log('antos', antos);
+
+						termObj.antos = antos;
 
 					} else {
 						console.log('error parsing empty para');
 					}
 				});
+				console.log('pojo', pojo);
 				// console.log('rexPojo before adding userTerms', rexPojo);
 
 				// add user specified terms (held in live settings) to rexPojo
@@ -312,7 +330,7 @@ const util = require('./appUtilities.js');
 				var sortedRexPojoLowerCaseKeys = Object.keys(sortedRexPojo).map(function (key) {
 						return key.toLowerCase();
 					});
-				var pojo = Object.create(null);
+				// var pojo = Object.create(null);
 				var last_dts;
 				var rexInitCaps = /((([A-Z][\w\-]+|\d{4})\s?(of|and|to)?\s?)(\d{4}(\-\d{1,2})?\s?)?)+/g;
 				var rexLeadArticles = /^(A|An|If|The|This|That|Each|Such|Every|Following)\s/;
