@@ -343,12 +343,13 @@ const util = require('./appUtilities.js');
 
 				return context.sync().then(function () {
 					// console.log('newDoc', newDoc);
+					console.log('masterTableArray', masterTableArray);
 
 					masterTableArray.forEach(function (termTableArray) {
 						var table = util.insertTable(newDoc.body, termTableArray);
 						// table.headerRowCount = 0;
-						table.style = 'List Table 4 - Accent 1';
-						table.styleFirstColumn = false;
+						/* table.style = 'List Table 4 - Accent 1';
+						table.styleFirstColumn = false; */
 					});
 
 					return context.sync().then(function () {
