@@ -52,7 +52,7 @@ const util = require('./appUtilities.js');
 			$('#select-btn').on('click', selectDefParas);
 			$('#select-btn-text').text('Select Definition Paragraphs');
 
-			$('#parse-btn').on('click', parseParas);
+			$('#parse-btn').on('click', parseVocabTerms);
 			$('#parse-btn-text').text('Parse Selected');
 		});
 	};
@@ -235,20 +235,20 @@ const util = require('./appUtilities.js');
 			});
 	}
 
-	function parseParas() {
-		keydownHandler('add', $('#user-term-add'));
-		keydownHandler('minus', $('#user-term-minus'));
+	function parseVocabTerms() {
+		/* keydownHandler('add', $('#user-term-add'));
+		keydownHandler('minus', $('#user-term-minus')); */
 
 		Word.run(function (context) {
-			// queue command to load/return all the paragraphs in the current selection as a range
-			var selRange = context.document.getSelection().paragraphs;
-			context.load(selRange, 'text');
+			// queue command to load/return all the paragraphs as a range
+			var allRange = context.document.body.paragraphs;
+			context.load(allRange, 'text');
 
 			return context.sync().then(function () {
-				var paras = selRange.items.map(function (p) {
+				var paras = allRange.items.map(function (p) {
 					return p.text.trim();
 				});
-				// console.log('paras.length', paras.length);
+				console.log('paras.length', paras.length);
 
 				// check agst global var to confirm that whole doc is still selected
 				/* if (paras.length === allRangeLength) {
