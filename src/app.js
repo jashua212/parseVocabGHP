@@ -240,12 +240,12 @@ const util = require('./appUtilities.js');
 		keydownHandler('minus', $('#user-term-minus')); */
 
 		Word.run(function (context) {
-			// queue command to load/return all the paragraphs as a range
-			var allRange = context.document.body.paragraphs;
-			context.load(allRange, 'text');
+			// queue command to load/return all the paragraphs in the current selection as a range
+			var selRange = context.document.getSelection().paragraphs;
+			context.load(selRange, 'text');
 
 			return context.sync().then(function () {
-				var paras = allRange.items.map(function (p) {
+				var paras = selRange.items.map(function (p) {
 					return p.text.trim();
 				});
 				console.log('paras.length', paras.length);
