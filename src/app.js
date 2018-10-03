@@ -21,7 +21,7 @@ const util = require('./appUtilities.js');
 				console.log('Sorry. The tutorial add-in uses Word.js APIs that are not available in your version of Office.');
 			}
 
-			var docx = Office.context.document;
+			/* var docx = Office.context.document;
 
 			// pull into 'live settings' the data (if any) that is stored in the file
 			docx.settings.refreshAsync(function () {
@@ -50,7 +50,7 @@ const util = require('./appUtilities.js');
 			});
 
 			$('#select-btn').on('click', selectDefParas);
-			$('#select-btn-text').text('Select Definition Paragraphs');
+			$('#select-btn-text').text('Select Definition Paragraphs'); */
 
 			$('#parse-btn').on('click', parseVocabTerms);
 			$('#parse-btn-text').text('Parse Selected');
@@ -327,11 +327,11 @@ const util = require('./appUtilities.js');
 					termTableArray.push([termObj.def]);
 
 					if (termObj.synos) {
-						termTableArray.push(['SYNONYMS', termObj.synos]);
+						termTableArray.push(['SYNONYMS:', termObj.synos]);
 					}
 
 					if (termObj.antos) {
-						termTableArray.push(['ANTONYMS', termObj.antos]);
+						termTableArray.push(['ANTONYMS:', termObj.antos]);
 					}
 
 					//push termTableArray into masterTableArray
