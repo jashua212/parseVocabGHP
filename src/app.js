@@ -270,6 +270,13 @@ const util = require('./appUtilities.js');
 				var pojo = Object.create(null);
 				var lastTerm;
 
+				var addParaBreaks = function (string) {
+					return string
+						.trim()
+						.replace(/\((n|v|adj|adv)\.\)/g, '\n' + '$&')
+						.replace(/^\n/, ''); //remove beginning para breaks (if any)
+				};
+
 				paras.forEach(function (p) {
 					if (!/^\*/.test(p)) {
 						let arr = p.split('\t');
@@ -282,19 +289,19 @@ const util = require('./appUtilities.js');
 						pojo[term] = Object.create(null);
 
 						//add definition thereto
-						pojo[term].def = arr[1];
+						pojo[term].def = addParaBreaks(arr[1]);
 
 					} else if (/SYNONYMS/.test(p)) {
-						let synos = p.replace('*SYNONYMS:*', '').trim();
+						let synos = p.replace('*SYNONYMS:*', '');
 						console.log('synos', synos);
 
-						pojo[lastTerm].synos = synos;
+						pojo[lastTerm].synos = addParaBreaks(synos);
 
 					} else if (/ANTONYMS/.test(p)) {
-						let antos = p.replace('*ANTONYMS:*', '').trim();
+						let antos = p.replace('*ANTONYMS:*', '');
 						console.log('antos', antos);
 
-						pojo[lastTerm].antos = antos;
+						pojo[lastTerm].antos = addParaBreaks(antos);
 
 					} else {
 						console.log('error parsing empty para');
