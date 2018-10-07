@@ -351,6 +351,8 @@ const util = require('./appUtilities.js');
 				return context.sync().then(function () {
 					// console.log('newDoc', newDoc);
 					console.log('masterTableArray', masterTableArray);
+					
+					newDoc.body.font = 'Arial';
 
 					masterTableArray.forEach(function (termTableArray) {
 						var table = util.insertTable(newDoc.body, termTableArray);
