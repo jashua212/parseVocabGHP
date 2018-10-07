@@ -351,12 +351,14 @@ const util = require('./appUtilities.js');
 				return context.sync().then(function () {
 					// console.log('newDoc', newDoc);
 					console.log('masterTableArray', masterTableArray);
+					var newDocBody = newDoc.body;
 
-					newDoc.body.font.name = 'Arial';
-					newDoc.body.font.size = 11;
+					newDocBody.font.name = 'Arial';
+					newDocBody.font.size = 11;
+					newDocBody.paragraphs.getFirst().lineSpacing = 20;
 
 					masterTableArray.forEach(function (termTableArray) {
-						var table = util.insertTable(newDoc.body, termTableArray);
+						var table = util.insertTable(newDocBody, termTableArray);
 						// table.headerRowCount = 0;
 						table.style = 'Grid Table 1 Light - Accent 1';
 						table.styleFirstColumn = false;
