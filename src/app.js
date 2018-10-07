@@ -355,7 +355,7 @@ const util = require('./appUtilities.js');
 
 					newDocBody.font.name = 'Arial';
 					newDocBody.font.size = 11;
-					newDocBody.paragraphs.getFirst().lineSpacing = 20;
+					// newDocBody.paragraphs.getFirst().lineSpacing = 20;
 
 					masterTableArray.forEach(function (termTableArray) {
 						var table = util.insertTable(newDocBody, termTableArray);
