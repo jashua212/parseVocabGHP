@@ -58,7 +58,7 @@ const util = require('./appUtilities.js');
 	};
 
 	/* UI Functions */
-	function keydownHandler(cmd, elm) {
+	/* function keydownHandler(cmd, elm) {
 		var inpVal = elm.val().trim();
 
 		if (!inpVal) {
@@ -119,7 +119,7 @@ const util = require('./appUtilities.js');
 		container.prepend(frag);
 
 		return container;
-	}
+	} */
 
 	function showNotification(header, content) {
 		$("#notification-header").text(header);
@@ -271,7 +271,7 @@ const util = require('./appUtilities.js');
 				var lastTerm;
 
 				var addParaBreaks = function (string) {
-					return string
+					return (string || '')
 						.trim()
 						.replace(/\((n|v|adj|adv)\.\)/g, '\n' + '$&')
 						.replace(/^\n/, ''); //remove beginning para breaks (if any)
@@ -283,7 +283,7 @@ const util = require('./appUtilities.js');
 						console.log('arr', arr);
 
 						//set 'term' for this para and subsequent SYNONYM/ANTONYM paras
-						var term = lastTerm = arr[0];
+						var term = lastTerm = arr[0].trim();
 
 						//create term object within pojo
 						pojo[term] = Object.create(null);
