@@ -142,7 +142,7 @@ var util = (function () {
 	function insertTable(docBody, tableArray) {
 		return docBody.insertTable(
 			tableArray.length, //rowLength
-			2, //tableArray[0].length, //columnLength
+			Math.max(2, tableArray[0].length), //columnLength
 			Word.InsertLocation.end, //insertPosition
 			tableArray
 		);
