@@ -274,7 +274,8 @@ const util = require('./appUtilities.js');
 					return (string || '')
 						.trim()
 						.replace(/\((n|v|adj|adv)\.\)/g, '\n' + '$&')
-						.replace(/^\n/, ''); //remove beginning para breaks (if any)
+						.replace(/^\n/, '') //remove beginning para breaks (if any)
+						.replace(/;\s/g, ' — '); //add 'em' dash to separate alternative meanings
 				};
 
 				paras.forEach(function (p) {
@@ -345,6 +346,19 @@ const util = require('./appUtilities.js');
 					masterTableArray.push(termTableArray);
 				});
 
+				// Create separate table array consisting solely of terms
+				// should be 20 terms, divided into 4 columns and 5 rows
+				var termsOnlyTableArray = [
+					[], [], [], [], []
+				];
+
+				Object.keys(sortedPojo).forEach(function (term, i) {
+					var moduloRemainder = i % 5;
+
+					termsOnlyTableArray[moduloRemainder].push(term);
+				});
+
+
 				var newDoc = context.application.createDocument();
 				context.load(newDoc);
 
@@ -357,12 +371,17 @@ const util = require('./appUtilities.js');
 					newDocBody.font.size = 11;
 					// newDocBody.paragraphs.getFirst().lineSpacing = 20;
 
+					// insert and style each individual term table
 					masterTableArray.forEach(function (termTableArray) {
 						var table = util.insertTable(newDocBody, termTableArray);
 						// table.headerRowCount = 0;
 						table.style = 'Grid Table 1 Light - Accent 1';
 						table.styleFirstColumn = false;
 					});
+
+					// insert and style the termsOnlyTableArray
+					var allTermsTable = util.insertTable(newDocBody, termsOnlyTableArray);
+					allTermsTable.style = 'Table Grid Light';
 
 					return context.sync().then(function () {
 						newDoc.open();
