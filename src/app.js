@@ -273,7 +273,7 @@ const util = require('./appUtilities.js');
 				var addParaBreaks = function (string) {
 					return (string || '')
 						.trim()
-						.replace(/\((n|v|adj|adv)\.\)/g, '\n' + '$&')
+						.replace(/\s((n|v|adj|adv)\.)/g, '\n' + '$&')
 						.replace(/^\n/, '') //remove beginning para breaks (if any)
 						.replace(/;\s/g, ' — '); //add 'em' dash to separate alternative meanings
 				};
