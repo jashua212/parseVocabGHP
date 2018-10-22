@@ -7,7 +7,6 @@ const util = require('./appUtilities.js');
 
 (function () {
 	var messageBanner;
-	// var allRangeLength = 0;
 
 	Office.initialize = function () {
 		$(document).ready(function () {
@@ -18,39 +17,8 @@ const util = require('./appUtilities.js');
 
 			// check Office
 			if (!Office.context.requirements.isSetSupported('WordApi', 1.3)) {
-				console.log('Sorry. The tutorial add-in uses Word.js APIs that are not available in your version of Office.');
+				console.log('Sorry. This add-in uses Word.js APIs that are not available in your version of Office.');
 			}
-
-			/* var docx = Office.context.document;
-
-			// pull into 'live settings' the data (if any) that is stored in the file
-			docx.settings.refreshAsync(function () {
-				// get userTerms from live settings and show them in ui
-				['add', 'minus'].forEach(function (cmd) {
-					addToShownUserTerms(cmd, docx.settings.get('userTerms-' + cmd) || []);
-				});
-			});
-
-			$('#user-term-add').on('keydown', function (e) {
-				if (e.keyCode === 13) {
-					keydownHandler('add', $(this));
-				}
-			});
-			$('#user-term-minus').on('keydown', function (e) {
-				if (e.keyCode === 13) {
-					keydownHandler('minus', $(this));
-				}
-			});
-
-			$('#user-terms-add-container').on('click', '.user-term', function () {
-				removeClickHandler('add', $(this));
-			});
-			$('#user-terms-minus-container').on('click', '.user-term', function () {
-				removeClickHandler('minus', $(this));
-			});
-
-			$('#select-btn').on('click', selectDefParas);
-			$('#select-btn-text').text('Select Definition Paragraphs'); */
 
 			$('#parse-btn').on('click', parseVocabTerms);
 			$('#parse-btn-text').text('Parse Selected');
@@ -58,69 +26,6 @@ const util = require('./appUtilities.js');
 	};
 
 	/* UI Functions */
-	/* function keydownHandler(cmd, elm) {
-		var inpVal = elm.val().trim();
-
-		if (!inpVal) {
-			return; //bail
-		}
-
-		// add to shown user terms if not a dupe
-		if (getShownUserTerms(cmd).indexOf(inpVal) === -1) {
-			addToShownUserTerms(cmd, [inpVal]);
-			elm.val(''); //clear input
-		}
-
-		// sync to settings if not a dupe
-		var docx = Office.context.document;
-		var userTerms = docx.settings.get('userTerms-' + cmd) || [];
-		if (userTerms.indexOf(inpVal) === -1) {
-			userTerms.push(inpVal);
-			userTerms.sort(util.sortByAlphabet);
-			docx.settings.set('userTerms-' + cmd, userTerms);
-			docx.settings.saveAsync();
-		}
-	}
-
-	function removeClickHandler(cmd, elm) {
-		var val = elm.text();
-		elm.remove();
-
-		// sync to settings
-		var docx = Office.context.document;
-		var userTerms = docx.settings.get('userTerms-' + cmd);
-		if (userTerms) {
-			userTerms.splice(userTerms.indexOf(val), 1);
-			docx.settings.set('userTerms-' + cmd, userTerms);
-			docx.settings.saveAsync();
-		}
-	}
-
-	function getShownUserTerms(cmd) {
-		var userTerms = [];
-
-		$('#user-terms-' + cmd + '-container .user-term').each(function () {
-			userTerms.push($(this).text());
-		});
-
-		return userTerms;
-	}
-
-	function addToShownUserTerms(cmd, arrayOfTerms) {
-		var container = $('#user-terms-' + cmd + '-container');
-		var frag = document.createDocumentFragment();
-
-		arrayOfTerms.forEach(function (term) {
-			var div = document.createElement('div');
-			div.classList.add('user-term');
-			div.textContent = term;
-			frag.appendChild(div);
-		});
-		container.prepend(frag);
-
-		return container;
-	} */
-
 	function showNotification(header, content) {
 		$("#notification-header").text(header);
 		$("#notification-body").text(content);
@@ -142,98 +47,12 @@ const util = require('./appUtilities.js');
 	}
 
 	/* Operative Functions */
-	/* function selectAll() {
-		Word.run(function (context) {
-			// queue command to select whole doc
-			context.document.body.select();
-
-			// queue command to load/return all the paragraphs as a range
-			var allRange = context.document.body.paragraphs;
-			context.load(allRange, 'text');
-
-			return context.sync().then(function () {
-				// if successful, store allRange.items.length in global var
-				allRangeLength = allRange.items.length;
-				console.log('allRangeLength', allRangeLength);
-			});
-		})
-		.catch(errHandler);
-	} */
-
-	function bifurcateParas(paras) {
-		const rexqtBeginning = /(^|(\(\w{1,3}\)\s+?))“[^”]+”/;
-
-		let startIndex = paras
-			.findIndex(function (p) {
-				return rexqtBeginning.test(p);
-			});
-
-		let revStartIndex = paras.slice(0).reverse()
-			.findIndex(function (p) {
-				return rexqtBeginning.test(p);
-			});
-		let endIndex = paras.length - (revStartIndex + 1);
-
-		/* let defParas = paras
-			.filter(function (p, i) {
-				return i >= startIndex && i <= endIndex;
-			});
-
-		let plainParas = paras
-			.filter(function (p, i) {
-				return i < startIndex || i > endIndex;
-			});
-
-		return [defParas, plainParas]; */
-
-		return [startIndex, endIndex];
+	function addParaBreaks(string) {
+		return (string || '')
+			.trim()
+			.replace(/ ((n|v|adj|adv)\.)/g, '\n' + '$&')
+			.replace(/; (\w)/g, ' — ' + '$&'); //add 'em' dash to separate alternative meanings
 	}
-
-	function selectDefParas() {
-		Word.run(function (context) {
-			// queue command to load/return all the paragraphs as a range
-			var allRange = context.document.body.paragraphs;
-			context.load(allRange, 'text');
-
-			return context.sync().then(function () {
-				var allParas = allRange.items.map(function (p) {
-					return p.text.trim();
-				});
-
-				var indices = bifurcateParas(allParas);
-				var startIndex = indices[0];
-				var endIndex = indices[1];
-				var startRange = allRange.items[startIndex].getRange();
-				var endRange = allRange.items[endIndex].getRange();
-
-				var expandedRange = endRange.expandTo(startRange);
-				expandedRange.select();
-
-				return context.sync();
-			});
-		})
-		.catch(errHandler);
-	}
-
-	/* function getCrossRefDefs(paras) {
-		const rexFirstSentence = /^.+?\.(?:\s|$)/;
-		return paras
-			.map(function (p) {
-				return p.match(rexFirstSentence);
-			})
-			.reduce(function (accumArray, matchArray) {
-				return accumArray.concat(matchArray); //flatten into a single array of strings
-			}, [])
-			.filter(function (sentence) {
-				return /\b(meaning|defined|definition)s*?\b/.test(sentence);
-			})
-			.filter(function (sentence) {
-				return /^“/.test(sentence);
-			})
-			.filter(function (sentence) {
-				return sentence[0].split(' ').length < 30;
-			});
-	} */
 
 	function parseVocabTerms() {
 		Word.run(function (context) {
@@ -251,33 +70,9 @@ const util = require('./appUtilities.js');
 					});
 					console.log('paras', paras);
 
-				// check agst global var to confirm that whole doc is still selected
-				/* if (paras.length === allRangeLength) {
-					// if so, trim paragraph collection (in place) from the end
-					let revLastIndex = paras.slice(0).reverse()
-						.findIndex(function (item) {
-							return /^“[^”]+”/.test(item);
-						});
-					paras.splice((revLastIndex * -1));
-					console.log('SPLICED PARAS', paras);
-
-				} else {
-					// otherwise, reset global var and don't trim paragraph collection
-					allRangeLength = 0;
-				} */
-
 				/* START HERE */
 				var pojo = Object.create(null);
 				var lastTerm;
-
-				var addParaBreaks = function (string) {
-					return (string || '')
-						.trim()
-						.replace(/ ((n|v|adj|adv)\.)/g, '\n' + '$&')
-						//.replace(/^\n/, '') //remove beginning para breaks (if any)
-						.replace(/; (\w)/g, ' — ' + '$&'); //add 'em' dash to separate alternative meanings
-						//.replace(/—\s\n/g, '\n'); //remove hanging 'em' dashes at end (if any)
-				};
 
 				paras.forEach(function (p) {
 					if (!/^\*/.test(p)) {
@@ -370,12 +165,11 @@ const util = require('./appUtilities.js');
 
 					newDocBody.font.name = 'Arial';
 					newDocBody.font.size = 11;
-					// newDocBody.paragraphs.getFirst().lineSpacing = 20;
 
 					// insert and style each individual term table
 					masterTableArray.forEach(function (termTableArray) {
 						var table = util.insertTable(newDocBody, termTableArray);
-						// table.headerRowCount = 0;
+						table.headerRowCount = 0;
 						table.style = 'Grid Table 1 Light - Accent 1';
 						table.styleFirstColumn = false;
 					});
