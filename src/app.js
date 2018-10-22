@@ -275,7 +275,8 @@ const util = require('./appUtilities.js');
 						.trim()
 						.replace(/\s((n|v|adj|adv)\.)/g, '\n' + '$&')
 						.replace(/^\n/, '') //remove beginning para breaks (if any)
-						.replace(/;\s/g, ' — '); //add 'em' dash to separate alternative meanings
+						.replace(/;\s/g, ' — ') //add 'em' dash to separate alternative meanings
+						.replace(/—\s\n/g, '\n'); //remove hanging 'em' dashes at end (if any)
 				};
 
 				paras.forEach(function (p) {
