@@ -335,11 +335,11 @@ const util = require('./appUtilities.js');
 					termTableArray.push([termObj.def]);
 
 					if (termObj.synos) {
-						termTableArray.push(['synonyms:', termObj.synos]);
+						termTableArray.push(['synonyms:'.toLowerCase(), termObj.synos]);
 					}
 
 					if (termObj.antos) {
-						termTableArray.push(['antonyms:', termObj.antos]);
+						termTableArray.push(['antonyms:'.toLowerCase(), termObj.antos]);
 					}
 
 					//push termTableArray into masterTableArray
