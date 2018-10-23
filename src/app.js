@@ -54,6 +54,12 @@ const util = require('./appUtilities.js');
 			.replace(/; (\w)/g, ' — ' + '$1'); //add 'em' dash to separate alternative meanings
 	}
 
+	function addBookendTabs(string) {
+		return (string || '')
+			.trim()
+			.replace(/\((n|v|adj|adv)\.\) /g, '\t' + '$&' + '\t');
+	}
+
 	function parseVocabTerms() {
 		Word.run(function (context) {
 			// queue command to load/return all the paragraphs as a range
@@ -86,7 +92,7 @@ const util = require('./appUtilities.js');
 						pojo[term] = Object.create(null);
 
 						//add definition thereto
-						pojo[term].def = addParaBreaks(arr[1]);
+						pojo[term].def = addBookendTabs(addParaBreaks(arr[1]));
 
 					} else if (/SYNONYMS/.test(p)) {
 						let synos = p.replace('*SYNONYMS:*', '');
