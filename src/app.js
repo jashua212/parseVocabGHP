@@ -47,17 +47,12 @@ const util = require('./appUtilities.js');
 	}
 
 	/* Operative Functions */
-	function addParaBreaks(string) {
+	function addParaBreaksAndTabs(string) {
 		return (string || '')
 			.trim()
 			.replace(/;\s+\(/g, '\n(') //add hard return
-			.replace(/; (\w)/g, ' — ' + '$1'); //add 'em' dash to separate alternative meanings
-	}
-
-	function addBookendTabs(string) {
-		return (string || '')
-			.trim()
-			.replace(/\((n|v|adj|adv)\.\) /g, '\t' + '$&' + '\t');
+			.replace(/; (\w)/g, ' — ' + '$1') //add 'em' dash to separate alternative meanings
+			.replace(/\((n|v|adj|adv)\.\) /g, '\t' + '$&' + '\t'); //add bookend tabs
 	}
 
 	function parseVocabTerms() {
@@ -92,19 +87,19 @@ const util = require('./appUtilities.js');
 						pojo[term] = Object.create(null);
 
 						//add definition thereto
-						pojo[term].def = addBookendTabs(addParaBreaks(arr[1]));
+						pojo[term].def = addParaBreaksAndTabs(arr[1]);
 
 					} else if (/SYNONYMS/.test(p)) {
 						let synos = p.replace('*SYNONYMS:*', '');
 						console.log('synos', synos);
 
-						pojo[lastTerm].synos = addParaBreaks(synos);
+						pojo[lastTerm].synos = addParaBreaksAndTabs(synos);
 
 					} else if (/ANTONYMS/.test(p)) {
 						let antos = p.replace('*ANTONYMS:*', '');
 						console.log('antos', antos);
 
-						pojo[lastTerm].antos = addParaBreaks(antos);
+						pojo[lastTerm].antos = addParaBreaksAndTabs(antos);
 
 					} else {
 						console.log('error parsing empty para');
