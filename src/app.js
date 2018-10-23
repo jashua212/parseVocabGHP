@@ -50,7 +50,7 @@ const util = require('./appUtilities.js');
 	function addParaBreaks(string) {
 		return (string || '')
 			.trim()
-			.replace(/ ((n|v|adj|adv)\.)/g, '\n' + '$&')
+			.replace(/ \(((n|v|adj|adv)\.\))/g, '\n' + '$&') //add hard return
 			.replace(/; (\w)/g, ' — ' + '$&'); //add 'em' dash to separate alternative meanings
 	}
 
