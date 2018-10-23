@@ -51,7 +51,7 @@ const util = require('./appUtilities.js');
 		return (string || '')
 			.trim()
 			.replace(/;\s+\(/g, '\n(') //add hard return
-			.replace(/; (\w)/g, ' — ' + '$&'); //add 'em' dash to separate alternative meanings
+			.replace(/; (\w)/g, ' — ' + '$1'); //add 'em' dash to separate alternative meanings
 	}
 
 	function parseVocabTerms() {
