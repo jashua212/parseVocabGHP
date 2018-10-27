@@ -47,10 +47,16 @@ const util = require('./appUtilities.js');
 	}
 
 	/* Operative Functions */
-	function addParaBreaksAndTabs(string) {
+	function addParaBreaksAndDashes(string) {
 		return (string || '')
 			.trim()
-			// .replace(/;\s+\(/g, '\n(') //add hard return
+			.replace(/;\s+\(/g, '\n(') //add hard return
+			.replace(/; (\w)/g, ' — ' + '$1'); //add 'em' dash to separate alternative meanings
+	}
+
+	function addDashesAndTabs(string) {
+		return (string || '')
+			.trim()
 			.replace(/; (\w)/g, ' — ' + '$1') //add 'em' dash to separate alternative meanings
 			.replace(/\((n|v|adj|adv)\.\) /g, '\t' + '$&' + '\t'); //add bookend tabs
 	}
@@ -72,8 +78,7 @@ const util = require('./appUtilities.js');
 					console.log('paras', paras);
 
 				/* START HERE */
-				var pojo = Object.create(null);
-				var lastTerm;
+				var pojo = {};
 
 				paras.forEach(function (p) {
 					if (!/^\*/.test(p)) {
@@ -81,7 +86,7 @@ const util = require('./appUtilities.js');
 						console.log('arr', arr);
 
 						//set 'term' for this para and subsequent SYNONYM/ANTONYM paras
-						var term = lastTerm = arr[0].trim();
+						var term = arr[0].trim();
 
 						//create term object within pojo
 						pojo[term] = Object.create(null);
@@ -91,21 +96,21 @@ const util = require('./appUtilities.js');
 							.trim()
 							.match(/\((n|v|adj|adv)\.\)[^;(]+/g);
 
-					} else if (/SYNONYMS/.test(p)) {
-						let synos = p.replace('*SYNONYMS:*', '');
-						console.log('synos', synos);
+					} else {
+						var lastValue = util.getValueOfLastKey(pojo); //should be getting an object
 
-						pojo[lastTerm].synos = addParaBreaksAndTabs(synos);
+						if (/SYNONYMS/.test(p)) {
+							var synos = p.replace('*SYNONYMS:*', '');
 
-					} else if (/ANTONYMS/.test(p)) {
-						let antos = p.replace('*ANTONYMS:*', '');
-						console.log('antos', antos);
+							lastValue.synos = addParaBreaksAndDashes(synos);
 
-						pojo[lastTerm].antos = addParaBreaksAndTabs(antos);
+						} else if (/ANTONYMS/.test(p)) {
+							var antos = p.replace('*ANTONYMS:*', '');
 
+							lastValue.antos = addParaBreaksAndDashes(antos);
+						}
 					}
 				});
-				lastTerm = '';
 
 				var sortedPojo = util.sortObject(pojo, util.sortByAlphabet);
 				console.log('debug sortedPojo', sortedPojo);
@@ -131,7 +136,7 @@ const util = require('./appUtilities.js');
 					termTableArray.push([term]);
 
 					termObj.defs.forEach(function (dd) {
-						termTableArray.push([addParaBreaksAndTabs(dd)]);
+						termTableArray.push([addDashesAndTabs(dd)]);
 					});
 
 					if (termObj.synos) {

@@ -81,6 +81,14 @@ var util = (function () {
 		});
 	}
 
+	function getValueOfLastKey(obj) {
+		//this function won't work in IE
+		var objKeysArray = Object.keys(obj);
+		var length = objKeysArray.length;
+
+		return obj[objKeysArray[length - 1]]; //value for last key of obj
+	}
+
 	function addBullet(strOrObj) {
 		var string = typeof strOrObj === 'object' ? strOrObj[0] : strOrObj;
 		return string.replace(/^/, '• ');
@@ -155,6 +163,7 @@ var util = (function () {
 		sortObject: sortObject,
 		mergeObjects: mergeObjects,
 		mergeWithinObject: mergeWithinObject,
+		getValueOfLastKey: getValueOfLastKey,
 		addBullet: addBullet,
 		createFirstTable: createFirstTable,
 		createSecondTable: createSecondTable,
