@@ -50,7 +50,7 @@ const util = require('./appUtilities.js');
 	function addParaBreaksAndTabs(string) {
 		return (string || '')
 			.trim()
-			.replace(/;\s+\(/g, '\n(') //add hard return
+			// .replace(/;\s+\(/g, '\n(') //add hard return
 			.replace(/; (\w)/g, ' — ' + '$1') //add 'em' dash to separate alternative meanings
 			.replace(/\((n|v|adj|adv)\.\) /g, '\t' + '$&' + '\t'); //add bookend tabs
 	}
@@ -87,7 +87,9 @@ const util = require('./appUtilities.js');
 						pojo[term] = Object.create(null);
 
 						//add definition thereto
-						pojo[term].def = addParaBreaksAndTabs(arr[1]);
+						pojo[term].defs = arr[1]
+							.trim()
+							.match(/\((n|v|adj|adv)\.\)[^;(]+/g);
 
 					} else if (/SYNONYMS/.test(p)) {
 						let synos = p.replace('*SYNONYMS:*', '');
@@ -101,8 +103,6 @@ const util = require('./appUtilities.js');
 
 						pojo[lastTerm].antos = addParaBreaksAndTabs(antos);
 
-					} else {
-						console.log('error parsing empty para');
 					}
 				});
 				lastTerm = '';
@@ -129,7 +129,10 @@ const util = require('./appUtilities.js');
 
 					//populate termTableArray
 					termTableArray.push([term]);
-					termTableArray.push([termObj.def]);
+
+					termObj.defs.forEach(function (dd) {
+						termTableArray.push([addParaBreaksAndTabs(dd)]);
+					});
 
 					if (termObj.synos) {
 						termTableArray.push(['synonyms:', termObj.synos]);
