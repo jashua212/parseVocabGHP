@@ -152,12 +152,12 @@ const util = require('./appUtilities.js');
 				});
 
 				// Create separate parts of speech table
-				var partsOfSpeechTable = [
+				var partsOfSpeechTableArray = [
 					['adjective', 'noun', 'adverb', 'verb']
 				];
 
 				for (var i = 0; i < 20; i++) {
-					partsOfSpeechTable.push(['1', '2', '3', '4']);
+					partsOfSpeechTableArray.push(['1', '2', '3', '4']);
 				}
 
 				// Create separate table array consisting solely of terms
@@ -192,8 +192,8 @@ const util = require('./appUtilities.js');
 						table.styleFirstColumn = false;
 					});
 
-					// insert and style the partsOfSpeechTable
-					var partsOfSpeechTable = util.insertTable(newDocBody, partsOfSpeechTable);
+					// insert and style the partsOfSpeechTableArray
+					var partsOfSpeechTable = util.insertTable(newDocBody, partsOfSpeechTableArray);
 					partsOfSpeechTable.style = 'Table Grid Light';
 
 					// insert and style the termsOnlyTableArray
