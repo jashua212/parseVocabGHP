@@ -151,6 +151,15 @@ const util = require('./appUtilities.js');
 					masterTableArray.push(termTableArray);
 				});
 
+				// Create separate parts of speech table
+				var partsOfSpeechTable = [
+					['adjective', 'noun', 'adverb', 'verb']
+				];
+
+				for (var i = 0; i < 20; i++) {
+					partsOfSpeechTable.push([]);
+				}
+
 				// Create separate table array consisting solely of terms
 				// should be 20 terms, divided into 4 columns and 5 rows
 				var termsOnlyTableArray = [
@@ -182,6 +191,10 @@ const util = require('./appUtilities.js');
 						table.style = 'Grid Table 1 Light - Accent 1';
 						table.styleFirstColumn = false;
 					});
+
+					// insert and style the partsOfSpeechTable
+					var partsOfSpeechTable = util.insertTable(newDocBody, partsOfSpeechTable);
+					partsOfSpeechTable.style = 'Table Grid Light';
 
 					// insert and style the termsOnlyTableArray
 					var allTermsTable = util.insertTable(newDocBody, termsOnlyTableArray);
