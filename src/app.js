@@ -157,7 +157,7 @@ const util = require('./appUtilities.js');
 				];
 
 				for (var i = 0; i < 20; i++) {
-					partsOfSpeechTable.push(['', '', '', '']);
+					partsOfSpeechTable.push(['1', '2', '3', '4']);
 				}
 
 				// Create separate table array consisting solely of terms
