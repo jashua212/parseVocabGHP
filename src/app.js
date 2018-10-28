@@ -91,10 +91,33 @@ const util = require('./appUtilities.js');
 						//create term object within pojo
 						pojo[term] = Object.create(null);
 
-						//add definition thereto
-						pojo[term].defs = arr[1]
+						//add definitions to term object
+						var defs = arr[1]
 							.trim()
 							.match(/\((n|v|adj|adv)\.\)[^(]+/g);
+
+						pojo[term].defs = defs;
+
+						//add parts of speech row to term object
+						var posRow = ['', '', '', ''];
+
+						defs.forEach(function (dd) {
+							var match = dd.match(/\((\w+?)\.\)/);
+
+							if (match) {
+								if (match[1] == 'adj') {
+									posRow[0] = term;
+								} else if (match[1] == 'n') {
+									posRow[1] = term;
+								} else if (match[1] == 'adv') {
+									posRow[2] = term;
+								} else if (match[1] == 'v') {
+									posRow[3] = term;
+								}
+							}
+						});
+
+						pojo[term].posRow = posRow;
 
 					} else {
 						var lastValue = util.getValueOfLastKey(pojo); //should be getting an object
@@ -153,12 +176,13 @@ const util = require('./appUtilities.js');
 
 				// Create separate parts of speech table
 				var partsOfSpeechTableArray = [
-					['adjective', 'noun', 'adverb', 'verb']
+					['adjective', 'noun', 'adverb', 'verb'],
+					['', '', '', '']
 				];
 
-				for (var i = 0; i < 20; i++) {
-					partsOfSpeechTableArray.push(['1', '2', '3', '4']);
-				}
+				Object.keys(sortedPojo).forEach(function (term) {
+					partsOfSpeechTableArray.push(sortedPojo[term].posRow);
+				});
 
 				// Create separate table array consisting solely of terms
 				// should be 20 terms, divided into 4 columns and 5 rows
