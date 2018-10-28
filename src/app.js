@@ -94,7 +94,7 @@ const util = require('./appUtilities.js');
 						//add definition thereto
 						pojo[term].defs = arr[1]
 							.trim()
-							.match(/\((n|v|adj|adv)\.\)[^;(]+/g);
+							.match(/\((n|v|adj|adv)\.\)[^(]+/g);
 
 					} else {
 						var lastValue = util.getValueOfLastKey(pojo); //should be getting an object
