@@ -218,6 +218,7 @@ const util = require('./appUtilities.js');
 
 					// insert and style the partsOfSpeechTableArray
 					var partsOfSpeechTable = util.insertTable(newDocBody, partsOfSpeechTableArray);
+					partsOfSpeechTable.headerRowCount = 1;
 					partsOfSpeechTable.style = 'Table Grid Light';
 
 					// insert and style the termsOnlyTableArray
