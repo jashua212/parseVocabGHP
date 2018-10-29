@@ -81,7 +81,7 @@ const util = require('./appUtilities.js');
 				var pojo = {};
 
 				paras.forEach(function (p) {
-					if (!/^\*/.test(p)) {
+					if (!/(syn|ant)onym/i.test(p)) {
 						let arr = p.split('\t');
 						console.log('arr', arr);
 
