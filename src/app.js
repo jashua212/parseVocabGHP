@@ -261,6 +261,7 @@ const util = require('./appUtilities.js');
 			// queue command to load/return all the paragraphs as a range
 			var body = context.document.body;
 			var bodyHtml = body.getHtml();
+			context.load(bodyHtml);
 
 			return context.sync().then(function () {
 				console.log("Body HTML contents: " + bodyHTML.value);
