@@ -260,11 +260,10 @@ const util = require('./appUtilities.js');
 		Word.run(function (context) {
 			// queue command to load/return all the paragraphs as a range
 			var body = context.document.body;
-			var bodyHtml = body.getHtml();
-			context.load(bodyHtml);
+			var ooxml = body.getOoxml();
 
 			return context.sync().then(function () {
-				console.log("Body HTML contents: " + bodyHTML.value);
+				console.log("Body HTML contents: " + ooxml);
 			});
 		})
 		.catch(errHandler);
