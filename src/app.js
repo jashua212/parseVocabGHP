@@ -23,7 +23,7 @@ const util = require('./appUtilities.js');
 			$('#vocab-parse-btn').on('click', parseVocabTerms);
 			$('#vocab-parse-btn-text').text('Parse Vocabulary');
 
-			$('#annot-parse-btn').on('click', parseAnnotations);
+			$('#annot-parse-btn').on('click', searchForText);
 			$('#annot-parse-btn-text').text('Parse Annotations');
 		});
 	};
@@ -234,6 +234,22 @@ const util = require('./appUtilities.js');
 						return context.sync();
 					});
 				});
+			});
+		})
+		.catch(errHandler);
+	}
+	
+	function searchForText() {
+		Word.run(function (context) {
+			// queue command to load/return all the paragraphs as a range
+			var searchResults = context.document.body.search(
+				'zotero://open-pdf/library/items/[A-Z0-9]{1,}',
+				{matchWildcards: true}
+			);
+			context.load(searchResults, 'text');
+
+			return context.sync().then(function () {
+				console.log(searchResults.items);
 			});
 		})
 		.catch(errHandler);
