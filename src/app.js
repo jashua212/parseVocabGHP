@@ -23,7 +23,7 @@ const util = require('./appUtilities.js');
 			$('#vocab-parse-btn').on('click', parseVocabTerms);
 			$('#vocab-parse-btn-text').text('Parse Vocabulary');
 
-			$('#annot-parse-btn').on('click', searchForText);
+			$('#annot-parse-btn').on('click', getBodyHtml);
 			$('#annot-parse-btn-text').text('Parse Annotations');
 		});
 	};
@@ -238,8 +238,9 @@ const util = require('./appUtilities.js');
 		})
 		.catch(errHandler);
 	}
-	
-	function searchForText() {
+
+	// doesn't work b/c don't seem to have access to hyperlinks
+	/* function searchForText() {
 		Word.run(function (context) {
 			// queue command to load/return all the paragraphs as a range
 			var searchResults = context.document.body.search(
@@ -250,6 +251,19 @@ const util = require('./appUtilities.js');
 
 			return context.sync().then(function () {
 				console.log(searchResults.items);
+			});
+		})
+		.catch(errHandler);
+	} */
+
+	function getBodyHtml() {
+		Word.run(function (context) {
+			// queue command to load/return all the paragraphs as a range
+			var body = context.document.body;
+			var bodyHtml = body.getHtml();
+
+			return context.sync().then(function () {
+				console.log("Body HTML contents: " + bodyHTML.value);
 			});
 		})
 		.catch(errHandler);
