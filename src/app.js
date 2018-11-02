@@ -20,8 +20,11 @@ const util = require('./appUtilities.js');
 				console.log('Sorry. This add-in uses Word.js APIs that are not available in your version of Office.');
 			}
 
-			$('#parse-btn').on('click', parseVocabTerms);
-			$('#parse-btn-text').text('Parse Selected');
+			$('#vocab-parse-btn').on('click', parseVocabTerms);
+			$('#vocab-parse-btn-text').text('Parse Vocabulary');
+
+			$('#annot-parse-btn').on('click', parseAnnotations);
+			$('#annot-parse-btn-text').text('Parse Annotations');
 		});
 	};
 
@@ -224,6 +227,66 @@ const util = require('./appUtilities.js');
 					// insert and style the termsOnlyTableArray
 					var allTermsTable = util.insertTable(newDocBody, termsOnlyTableArray);
 					allTermsTable.style = 'Table Grid Light';
+
+					return context.sync().then(function () {
+						newDoc.open();
+
+						return context.sync();
+					});
+				});
+			});
+		})
+		.catch(errHandler);
+	}
+
+	function parseAnnotations() {
+		Word.run(function (context) {
+			// queue command to load/return all the paragraphs as a range
+			var allRange = context.document.body.paragraphs;
+			context.load(allRange, 'text');
+
+			return context.sync().then(function () {
+				var paras = allRange.items
+					.map(function (p) {
+						return p.text.trim();
+					})
+					.filter(function (p) {
+						return p; //filter out empty items in array
+					});
+					console.log('paras', paras);
+
+				/* START HERE */
+				// going straight to table array (instead of an intermediate object)
+				var tableArray = [];
+
+				paras.forEach(function (p) {
+					// if not a note -- notes have "{note on ...) " at their ends
+					if (!/\(note.+?\)\s*$/i.test(p)) {
+						// remove beginning and end quotation marks
+						var text = p
+							.replace(/^"/, '')
+							.replace(/(")(\s*\(.+\))/, '$2');
+
+						tableArray.push([text]);
+
+					} else {
+						tableArray[tableArray.length - 1].push(p);
+					}
+				});
+
+				/* END HERE */
+				var newDoc = context.application.createDocument();
+				context.load(newDoc);
+
+				return context.sync().then(function () {
+					var newDocBody = newDoc.body;
+
+					newDocBody.font.name = 'TimesNewRoman';
+					newDocBody.font.size = 12;
+
+					// insert and style the tableArray
+					var annotTable = util.insertTable(newDocBody, tableArray, 3);
+					annotTable.style = 'Table Grid Light';
 
 					return context.sync().then(function () {
 						newDoc.open();
