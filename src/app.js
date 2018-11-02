@@ -263,7 +263,7 @@ const util = require('./appUtilities.js');
 			var ooxml = body.getOoxml();
 
 			return context.sync().then(function () {
-				console.log("Body HTML contents: " + ooxml);
+				console.log("Body HTML contents: " + ooxml.value);
 			});
 		})
 		.catch(errHandler);
