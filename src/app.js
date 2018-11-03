@@ -152,30 +152,29 @@ const util = require('./appUtilities.js');
 				}
 
 				// Create master array of individual term tables
-				var masterTableArray = [];
+				var masterTableArray = Object.keys(sortedPojo)
+					.map(function (term) {
+						var termTableArray = [];
+						var termObj = sortedPojo[term];
 
-				Object.keys(sortedPojo).forEach(function (term) {
-					var termTableArray = [];
-					var termObj = sortedPojo[term];
+						//populate termTableArray
+						termTableArray.push([term]);
 
-					//populate termTableArray
-					termTableArray.push([term]);
+						termObj.defs.forEach(function (dd) {
+							termTableArray.push([addDashesAndTabs(dd)]);
+						});
 
-					termObj.defs.forEach(function (dd) {
-						termTableArray.push([addDashesAndTabs(dd)]);
+						if (termObj.synos) {
+							termTableArray.push(['synonyms:', termObj.synos]);
+						}
+
+						if (termObj.antos) {
+							termTableArray.push(['antonyms:', termObj.antos]);
+						}
+
+						//push termTableArray into masterTableArray
+						return termTableArray;
 					});
-
-					if (termObj.synos) {
-						termTableArray.push(['synonyms:', termObj.synos]);
-					}
-
-					if (termObj.antos) {
-						termTableArray.push(['antonyms:', termObj.antos]);
-					}
-
-					//push termTableArray into masterTableArray
-					masterTableArray.push(termTableArray);
-				});
 
 				// Create separate parts of speech table
 				var partsOfSpeechTableArray = [
