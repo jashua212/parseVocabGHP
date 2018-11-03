@@ -339,11 +339,11 @@ const util = require('./appUtilities.js');
 
 						return context.sync().then(function () {
 							console.log('pageNos', pageNos);
-							var insertedTable = context.document.body.tables(0);
-							context.load(insertedTable);
+							var cells = context.document.body.tableCells;
+							context.load(cells);
 
 							return context.sync().then(function () {
-								console.log(insertedTable);
+								console.log(cells);
 							});
 						});
 					});
