@@ -312,8 +312,8 @@ const util = require('./appUtilities.js');
 				});
 
 				var pageNos = tableArray.map(function (row) {
-					console.log(row);
-					var match = row[1].match(/:(\d+)\)$/);
+					// console.log(row);
+					var match = row[0].match(/:(\d+)\)$/);
 					return match ? match[1] : '';
 				});
 
