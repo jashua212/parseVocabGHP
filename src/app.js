@@ -268,7 +268,6 @@ const util = require('./appUtilities.js');
 
 				var urlExPageNo = ooxmlString
 					.match(/zotero[^?]+?\?/i)
-					.replace(/\?$/, '');
 				console.log('urlExPageNo', urlExPageNo);
 			});
 		})
