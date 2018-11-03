@@ -336,6 +336,7 @@ const util = require('./appUtilities.js');
 					// insert and style the tableArray
 					var annotTable = util.insertTable(newDocBody, tableArray, 3);
 					annotTable.style = 'Table Grid Light';
+					console.log('annotTable,', annotTable);
 
 					return context.sync().then(function () {
 						newDoc.open();
@@ -344,6 +345,7 @@ const util = require('./appUtilities.js');
 							console.log('pageNos', pageNos);
 							var table = context.document.body.tables.getRange();
 							// context.load(table);
+							// NOT GETTING RANGE
 
 							return context.sync().then(function () {
 								console.log(table);
