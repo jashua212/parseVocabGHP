@@ -302,7 +302,8 @@ const util = require('./appUtilities.js');
 							.replace(/^"/, '')
 							.replace(/(")(\s*\(.+\))/, '$2');
 
-						var cite = text.match(/\(([^)]+:\d+)\)$/)[1] || '';
+						var match = text.match(/\(([^)]+:\d+)\)$/);
+						var cite = match ? match[1] : '';
 
 						tableArray.push([text, '', cite]);
 
