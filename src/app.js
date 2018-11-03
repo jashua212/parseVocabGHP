@@ -302,10 +302,12 @@ const util = require('./appUtilities.js');
 							.replace(/^"/, '')
 							.replace(/(")(\s*\(.+\))/, '$2');
 
-						tableArray.push([text]);
+						var cite = text.match(/\(([^)]+:\d+)\)$/)[1] || '';
+
+						tableArray.push([text, '', cite]);
 
 					} else {
-						tableArray[tableArray.length - 1].push(p);
+						tableArray[tableArray.length - 1][1] = p;
 					}
 				});
 
@@ -339,11 +341,11 @@ const util = require('./appUtilities.js');
 
 						return context.sync().then(function () {
 							console.log('pageNos', pageNos);
-							var cells = context.document.body.tableCells;
-							context.load(cells);
+							var table = context.document.body.tables[0];
+							context.load(table);
 
 							return context.sync().then(function () {
-								console.log(cells);
+								console.log(table);
 							});
 						});
 					});
