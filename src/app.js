@@ -268,15 +268,14 @@ const util = require('./appUtilities.js');
 
 				var urlExPageNo = ooxmlString
 					.match(/zotero[^?]+?\?/i);
-				console.log('urlExPageNo', urlExPageNo);
 
-				parseAnnotations();
+				parseAnnotations(urlExPageNo);
 			});
 		})
 		.catch(errHandler);
 	}
 
-	function parseAnnotations() {
+	function parseAnnotations(urlExPageNo) {
 		Word.run(function (context) {
 			// queue command to load/return all the paragraphs as a range
 			var allRange = context.document.body.paragraphs;
@@ -316,6 +315,11 @@ const util = require('./appUtilities.js');
 					var match = row[0].match(/:(\d+)\)$/);
 					return match ? match[1] : '';
 				});
+
+				var citedAuth = tableArray[1][0].match(/\(([^)]+):\d+\)$/)[1];
+				console.log('citedAuth', citedAuth);
+
+				console.log('urlExPageNo', urlExPageNo);
 
 				/* END HERE */
 				var newDoc = context.application.createDocument();
