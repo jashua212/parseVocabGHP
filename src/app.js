@@ -339,6 +339,12 @@ const util = require('./appUtilities.js');
 
 						return context.sync().then(function () {
 							console.log('pageNos', pageNos);
+							var insertedTable = context.document.body.tables(0);
+							context.load(insertedTable);
+
+							return context.sync().then(function () {
+								console.log(insertedTable);
+							});
 						});
 					});
 				});
