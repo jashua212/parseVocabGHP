@@ -311,6 +311,10 @@ const util = require('./appUtilities.js');
 					}
 				});
 
+				var pageNos = tableArray.map(function (row) {
+					return row[1].match(/:(\d+)\)$/)[1];
+				});
+
 				/* END HERE */
 				var newDoc = context.application.createDocument();
 				context.load(newDoc);
@@ -328,7 +332,9 @@ const util = require('./appUtilities.js');
 					return context.sync().then(function () {
 						newDoc.open();
 
-						return context.sync();
+						return context.sync().then(function () {
+							console.log('pageNos', pageNos);
+						});
 					});
 				});
 			});
