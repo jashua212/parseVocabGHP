@@ -342,8 +342,8 @@ const util = require('./appUtilities.js');
 
 						return context.sync().then(function () {
 							console.log('pageNos', pageNos);
-							var table = context.document.body.tables[0];
-							context.load(table);
+							var table = context.document.body.tables.getRange();
+							// context.load(table);
 
 							return context.sync().then(function () {
 								console.log(table);
