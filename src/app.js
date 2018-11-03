@@ -298,17 +298,17 @@ const util = require('./appUtilities.js');
 					// if not a note -- notes have "{note on ...) " at their ends
 					if (!/\(note.+?\)\s*$/i.test(p)) {
 						// remove beginning and end quotation marks
-						var text = p
+						var text = (p
 							.replace(/^"/, '')
-							.replace(/(")(\s*\(.+\))/, '$2');
+							.replace(/(")(\s*\(.+\))/, '$2')) + '\n';
 
 						var match = text.match(/\(([^)]+:\d+)\)$/);
-						var cite = match ? match[1] : '';
+						var cite = match ? match[1]: '';
 
-						tableArray.push([text + '\n', '', cite + '\n']);
+						tableArray.push([text, '', cite]);
 
 					} else {
-						tableArray[tableArray.length - 1][1] = p + '\n';
+						tableArray[tableArray.length - 1][1] = (p + '\n');
 					}
 				});
 
