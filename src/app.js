@@ -312,7 +312,7 @@ const util = require('./appUtilities.js');
 					}
 				});
 
-				/* var pageNos = tableArray.map(function (row) {
+				var pageNos = tableArray.map(function (row) {
 					// console.log(row);
 					var match = row[0].match(/:(\d+)\)$/);
 					return match ? match[1] : '';
@@ -321,7 +321,7 @@ const util = require('./appUtilities.js');
 				var citedAuth = tableArray[1][0].match(/\(([^)]+):\d+\)$/)[1];
 				console.log('citedAuth', citedAuth);
 
-				console.log('urlExPageNo', urlExPageNo); */
+				console.log('urlExPageNo', urlExPageNo);
 
 				/* END HERE */
 				var newDoc = context.application.createDocument();
@@ -342,7 +342,7 @@ const util = require('./appUtilities.js');
 						newDoc.open();
 
 						return context.sync().then(function () {
-							// console.log('pageNos', pageNos);
+							console.log('pageNos', pageNos);
 							/* var table = context.document.body.tables.getRange();
 							// context.load(table);
 							// NOT GETTING RANGE
