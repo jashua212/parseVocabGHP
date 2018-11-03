@@ -263,7 +263,13 @@ const util = require('./appUtilities.js');
 			var ooxml = body.getOoxml();
 
 			return context.sync().then(function () {
-				console.log("Body HTML contents: " + ooxml.value);
+				var ooxmlString = ooxml.value;
+				console.log("Body HTML contents: " + ooxmlString);
+
+				var urlExPageNo = ooxmlString
+					.match(/zotero[^?]+?\?/i)
+					.replace(/\?$/, '');
+				console.log('urlExPageNo', urlExPageNo);
 			});
 		})
 		.catch(errHandler);
