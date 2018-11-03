@@ -305,10 +305,10 @@ const util = require('./appUtilities.js');
 						var match = text.match(/\(([^)]+:\d+)\)$/);
 						var cite = match ? match[1] : '';
 
-						tableArray.push([text, '', cite]);
+						tableArray.push([text + '\n', '', cite + '\n']);
 
 					} else {
-						tableArray[tableArray.length - 1][1] = p;
+						tableArray[tableArray.length - 1][1] = p + '\n';
 					}
 				});
 
