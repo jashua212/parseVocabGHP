@@ -23,7 +23,7 @@ const util = require('./appUtilities.js');
 			$('#vocab-parse-btn').on('click', parseVocabTerms);
 			$('#vocab-parse-btn-text').text('Parse Vocabulary');
 
-			$('#annot-parse-btn').on('click', getBodyHtml);
+			$('#annot-parse-btn').on('click', getOoxml);
 			$('#annot-parse-btn-text').text('Parse Annotations');
 		});
 	};
@@ -256,7 +256,7 @@ const util = require('./appUtilities.js');
 		.catch(errHandler);
 	} */
 
-	function getBodyHtml() {
+	function getOoxml() {
 		Word.run(function (context) {
 			// queue command to load/return all the paragraphs as a range
 			var body = context.document.body;
