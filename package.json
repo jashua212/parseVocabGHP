@@ -12,11 +12,11 @@
   "babel-core": "^6.26.3",
   "babel-loader": "^7.1.5",
   "babel-preset-env": "^1.7.0",
-  "webpack": "^4.29.5",
-  "webpack-cli": "^3.2.3"
+  "webpack": "^4.35.3",
+  "webpack-cli": "^3.3.5"
  },
  "dependencies": {
-  "core-js": "^2.6.5",
+  "core-js": "^2.6.9",
   "jquery": "^3.4.1"
  }
 }
