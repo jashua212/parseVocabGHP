@@ -9,7 +9,7 @@
  "author": "jashua212@gmail.com",
  "license": "MIT",
  "devDependencies": {
-  "babel-core": "^6.26.3",
+  "babel-core": "^4.7.16",
   "babel-loader": "^9.1.2",
   "babel-preset-env": "^1.7.0",
   "webpack": "^5.76.1",
